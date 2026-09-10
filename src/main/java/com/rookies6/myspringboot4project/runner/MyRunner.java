@@ -1,5 +1,7 @@
 package com.rookies6.myspringboot4project.runner;
 
+import com.rookies6.myspringboot4project.config.CustomVO;
+import com.rookies6.myspringboot4project.property.MyBootProperties;
 import jakarta.persistence.OrderBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,8 @@ import java.util.function.Consumer;
 public class MyRunner implements ApplicationRunner {
     @Value("${spring.application.name}")
     String applicationName;
+    @Autowired
+    private CustomVO customVO;
 
     @Value("${myboot.name}")
     String name;
@@ -23,9 +27,14 @@ public class MyRunner implements ApplicationRunner {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private MyBootProperties properties;
+
     @Override
     public void run(ApplicationArguments args) throws Exception{
         System.out.println("MyRunner run() 호출됨!!");
+        System.out.println("현재 활성화 CustomVO=" + customVO);
+
         System.out.println("application name:" + applicationName);
         // Consumer 인터페이스를 Anonymous Inner Class로 표현
         System.out.println("-----------------------------------------");
@@ -49,5 +58,10 @@ public class MyRunner implements ApplicationRunner {
         System.out.println("${myboot.name} = " + name);
         System.out.println("${myboot.age} = " + age);
         System.out.println("${myboot.fullName} = " + environment.getProperty("myboot.fullName"));
+        System.out.println("-----------------------------------------");
+
+        System.out.println("MyBootProperties getName() = " + properties.getName());
+        System.out.println("MyBootProperties getAge() = " + properties.getAge());
+        System.out.println("MyBootProperties getFullName() = " + properties.getFullName());
     }
 }
