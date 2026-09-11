@@ -21,7 +21,7 @@ public class Customer {
 
     @Column(nullable = false)
     private String customerName;
-
+    // 생성 시간
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt = LocalDateTime.now();
