@@ -4,6 +4,7 @@ import com.rookies6.myspringboot4project.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 class CustomerRepositoryTest {
     @Autowired
     CustomerRepository customerRepository;
@@ -38,5 +40,16 @@ class CustomerRepositoryTest {
 
         optionalCustomer.ifPresent(customer -> System.out.println(customer.getCustomerName()));
         optionalCustomer.ifPresent(System.out::println);
+    }
+
+    @Test
+    void testFindByNotFound() {
+        Customer notFoundCustomer = customerRepository.findByCustomerId("B001")
+                .orElseGet(() -> new Customer());
+//        assertThat(notFoundCustomer.getCustomerId()).isEqualTo("A004");
+        assertThat(notFoundCustomer.getCustomerId()).isNull();
+
+        Customer notFound = customerRepository.findById(3L)
+                .orElseThrow(() -> new RuntimeException("Customer Not Found"));
     }
 }
